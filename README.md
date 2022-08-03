@@ -1,6 +1,6 @@
-**English** | [中文](https://p3terx.com/archives/cloudflare-warp-configuration-script.html)
+# Cloudflare WARP Installer but with BoringTun
 
-# Cloudflare WARP Installer
+> WireGuard-Go Sucks
 
 A Bash script that automatically installs and configures CloudFlare WARP in Linux, connects to WARP networks with WARP official client or WireGuard.
 
@@ -30,15 +30,13 @@ Supported distributions:
 
 Supported platform architecture:
 
-- x86(i386)
 - x86_64(amd64)
 - ARMv8(aarch64)
-- ARMv7(armhf)
 
 ## Usage
 
 ```bash
-bash <(curl -fsSL git.io/warp.sh) [SUBCOMMAND]
+bash <(curl -fsSL https://raw.githubusercontent.com/cokemine/warp.sh/main/warp.sh) [SUBCOMMAND]
 # or
 wget git.io/warp.sh
 bash warp.sh [SUBCOMMAND]
@@ -69,20 +67,22 @@ menu            Chinese special features menu
 
 - Install and automatically configure the Proxy Mode feature of the WARP client, enable the local loopback port 40000, and use an application that supports SOCKS5 to connect to this port.
     ```
-    bash <(curl -fsSL git.io/warp.sh) proxy
+    bash <(curl -fsSL https://raw.githubusercontent.com/cokemine/warp.sh/main/warp.sh) proxy
     ```
 
 - Install and automatically configure WARP IPv6 Network (with WireGuard)，Giving your Linux server access to IPv6 networks.
     ```
-    bash <(curl -fsSL git.io/warp.sh) wg6
+    bash <(curl -fsSL https://raw.githubusercontent.com/cokemine/warp.sh/main/warp.sh) wg6
     ```
 
 - This Bash script is also a good WireGuard installer.
     ```
-    bash <(curl -fsSL git.io/warp.sh) wg
+    bash <(curl -fsSL https://raw.githubusercontent.com/cokemine/warp.sh/main/warp.sh) wg
     ```
 
 ## Credits
+
+- [P3TERX/warp.sh](https://github.com/P3TERX/warp.sh)
 
 - [Cloudflare WARP](https://1.1.1.1/)
 - [WireGuard](https://www.wireguard.com/)
@@ -91,6 +91,8 @@ menu            Chinese special features menu
 ## License
 
 [MIT](https://github.com/P3TERX/warp.sh/blob/main/LICENSE) © **[P3TERX](https://p3terx.com/)**
+
+[MIT](https://raw.githubusercontent.com/cokemine/warp.sh/main/LICENSE) © [神楽坂みずき](https://github.com/cokemine)
 
 ## Notice of Non-Affiliation and Disclaimer
 

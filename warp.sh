@@ -427,14 +427,47 @@ Install_WireGuardTools() {
     esac
 }
 
+Install_BoringTun() {
+    # https://raw.githubusercontent.com/P3TERX/script/master/wireguard-go.sh
+    RELEASE_URL="https://github.com/cokemine/boringtun-builder/releases/download/latest"
+    BIN_DIR='/usr/local/bin'
+    BIN_NAME='boringtun-cli'
+    BIN_FILE="${BIN_DIR}/${BIN_NAME}"
+    case ${SysInfo_Arch} in
+    x86_64)
+        DOWNLOAD_URL="${RELEASE_URL}/boringtun-cli-x86_64-unknown-linux-gnu.tar.gz"
+        ;;
+    aarch64 | aarch64_be | arm64 | armv8b | armv8l)
+        DOWNLOAD_URL="${RELEASE_URL}/boringtun-cli-aarch64-unknown-linux-gnu.tar.gz"
+        ;;
+    *)
+        exit 1
+        ;;
+    esac
+    curl -LS "${DOWNLOAD_URL}" | tar xzC ${BIN_DIR} ${BIN_NAME}
+    chmod +x ${BIN_FILE}
+    if [[ ! $(echo ${PATH} | grep ${BIN_DIR}) ]]; then
+        ln -sf ${BIN_FILE} /usr/bin/${BIN_NAME}
+    fi
+    if [[ -s ${BIN_FILE} && $(${BIN_NAME} --version) ]]; then
+        echo -e "${INFO} Done."
+    else
+        echo -e "${ERROR} ${PROJECT_NAME} installation failed !"
+        exit 1
+    fi
+
+    SYSTEMD_FILE="/lib/systemd/system/wg-quick@.service"
+    sed -i "/\[Service\]/a\Environment=\"WG_QUICK_USERSPACE_IMPLEMENTATION=boringtun-cli\"\nEnvironment=\"WG_SUDO=1\"" ${SYSTEMD_FILE}
+}
+
 Install_WireGuardGo() {
     case ${SysInfo_Virt} in
     openvz | lxc*)
-        curl -fsSL git.io/wireguard-go.sh | bash
+        Install_BoringTun
         ;;
     *)
         if [[ ${SysInfo_Kernel_Ver_major} -lt 5 || ${SysInfo_Kernel_Ver_minor} -lt 6 ]]; then
-            curl -fsSL git.io/wireguard-go.sh | bash
+            Install_BoringTun
         fi
         ;;
     esac
